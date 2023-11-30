@@ -14,7 +14,7 @@ const createEventSchema = Joi.object({
     "string.base": "Debe ser una cadena de texto",
   }),
   theme: Joi.string().min(4).max(200).required(),
-  city: Joi.string().min(4).max(200).required(),
+  city: Joi.string().min(2).max(200).required(),
   date: Joi.date().required(),
 });
 

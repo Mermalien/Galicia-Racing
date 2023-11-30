@@ -1,5 +1,5 @@
-const eventIdSchema = require("./eventIdSchema");
 const createEventSchema = require("./createEventSchema");
 const filterEventsSchema = require("./filterEventsSchema");
+const eventIdSchema = require("./eventIdSchema");
 
-module.exports = { eventIdSchema, createEventSchema, filterEventsSchema };
+module.exports = { createEventSchema, filterEventsSchema, eventIdSchema };

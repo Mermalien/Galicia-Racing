@@ -4,7 +4,6 @@ const {
   deleteAttendee,
 } = require("../../repositories/attendees");
 const { selectEventById } = require("../../repositories/events");
-const { eventIdSchema } = require("../../schemas/events");
 
 const { generateError } = require("../../utils");
 
@@ -12,8 +11,6 @@ const attendeeController = async (req, res, next) => {
   try {
     //Nos traemos el id del evento al que se quiere asistir y lo validamos
     const { eventId } = req.params;
-
-    await eventIdSchema.validateAsync(eventId);
 
     //Seleccionamos el evento correspondiente
     const evento = await selectEventById(eventId);

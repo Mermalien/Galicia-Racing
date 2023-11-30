@@ -1,14 +1,56 @@
-.single-event{
-    border-bottom: solid 1px black;
-    height: auto;
-    width: 250px;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    padding: 1rem;
-}
-.attendee-btn{
-    width: 15rem;
-    height: 4rem;
+.single-event {
+  border-radius: 12px;
+  width: 350px;
+  height: 600px;
+  margin-bottom: 1rem;
+  background-color: rgba(255, 255, 255, 0.415);
+  opacity: 90%;
+  overflow-y: hidden;
 }
 
+.eventFooter {
+  width: 100%;
+  display: flex;
+  gap: 1rem;
+  padding-right: 1.7rem;
+}
+
+.if-user-btns {
+  width: 100vw;
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.attendees-count {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.p-link,
+.attendee-btn,
+.delete-btn {
+  width: 90px;
+  height: 3rem;
+  color: rgb(20, 20, 20);
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+}
+
+.p-link {
+  width: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 15px;
+  color: rgb(17, 17, 165);
+}
+
+.attendee-btn {
+  background-color: rgb(128, 236, 128);
+}
+
+.delete-btn {
+  background-color: rgb(235, 76, 76);
+}

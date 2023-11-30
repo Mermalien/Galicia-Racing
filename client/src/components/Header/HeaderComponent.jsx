@@ -11,7 +11,7 @@ const Header = () => {
           <img
             src={logo}
             alt="galicia-racing"
-            style={{ width: "250px", height: "230px" }}
+            style={{ width: "200px", height: "200px" }}
           />
         </Link>
       </div>

@@ -18,11 +18,6 @@ const loginUser = async (req, res, next) => {
       generateError("Email o contraseña incorrectos", 400);
     }
 
-    //Si el usuario existe pero está sin activar lanzamos un error
-    if (user.registrationCode) {
-      generateError("El usuario está sin activar, revisa tu email", 400);
-    }
-
     //Comparamos la contraseña con la encriptada que hay en la bbdd para verificar que son la misma. Si no lo son lanzamos un error
     const verifyPassword = await bcrypt.compare(password, user.password);
 
@@ -38,7 +33,7 @@ const loginUser = async (req, res, next) => {
       expiresIn: "30d",
     });
 
-    res.status(200).send({ status: "Sesión iniciada", data: { token } });
+    res.send({ status: "Sesión iniciada", data: { token } });
   } catch (error) {
     next(error);
   }

@@ -11,7 +11,7 @@ const selectEvents = async (queryParams) => {
   let values = [];
 
   //Cláusula que se va a usar la primera vez
-  let clause = "WHERE";
+  let clause = " WHERE";
 
   //Recorremos las propiedades del queryParams(filtros que envía el cliente)
   for (const key in queryParams) {
@@ -31,6 +31,7 @@ const selectEvents = async (queryParams) => {
   sqlQuery += " GROUP BY e.id";
 
   const [events] = await pool.query(sqlQuery, values);
+
   return events;
 };
 

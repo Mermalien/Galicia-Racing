@@ -1,11 +1,13 @@
 import "./createEvent.css";
-import { useContext, useState } from "react";
-import { AuthContext } from "../../context/AuthContext";
+import { useState } from "react";
+
 import { createEventService } from "../../services/eventService";
 import { eventItemPropTypes } from "../../utils/customPropTypes";
+import { useNavigate } from "react-router-dom";
 
-export const CreateEvent = ({ createEvent }) => {
-  const { token } = useContext(AuthContext);
+export const CreateEvent = () => {
+  const navigate = useNavigate();
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [image, setImage] = useState("");
@@ -13,34 +15,43 @@ export const CreateEvent = ({ createEvent }) => {
   const [city, setCity] = useState("");
   const [date, setDate] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
 
   if (loading) return <p>Cargando...</p>;
-  if (error) {
-    throw new Error(error);
-  }
-  const handleThemeChange = (e) => {
-    setTheme(e.target.value);
-  };
+
   const handleNewEvent = async (e) => {
-    e.preventDefault();
-
     try {
-      const data = new FormData(e.target);
-      const newEventItem = await createEventService({ data, token });
+      e.preventDefault();
 
-      createEvent(newEventItem);
-      e.target.reset();
       setLoading(true);
+
+      setErrorMsg("");
+
+      const formData = new FormData();
+
+      formData.append("title", title);
+      formData.append("description", description);
+      formData.append("theme", theme);
+      formData.append("city", city);
+      formData.append("date", date);
+      if (image) formData.append("image", image);
+
+      const body = await createEventService(formData);
+
+      if (body.status === "error") {
+        throw new Error(body.message);
+      }
+
+      navigate("/");
     } catch (error) {
-      setError(error.message);
+      setErrorMsg(error.message);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <>
+    <div className="new-post">
       <h2>Crea una publicación</h2>
       <form className="new-event" onSubmit={handleNewEvent}>
         <fieldset>
@@ -49,8 +60,9 @@ export const CreateEvent = ({ createEvent }) => {
             type="title"
             name="title"
             id={title}
-            required
+            value={title}
             onChange={(e) => setTitle(e.target.value)}
+            required
           />
         </fieldset>
 
@@ -60,23 +72,32 @@ export const CreateEvent = ({ createEvent }) => {
             type="desription"
             name="description"
             id={description}
-            required
+            value={description}
             onChange={(e) => setDescription(e.target.value)}
+            required
           />
         </fieldset>
         <fieldset>
           <label htmlFor="image">Imagen</label>
           <input
+            className="input-image"
             type="file"
             name="image"
             id={image}
             accept={"image/*"}
             onChange={(e) => setImage(e.target.files[0])}
+            required
           />
         </fieldset>
         <fieldset>
           <label htmlFor="theme">Temática</label>
-          <select name="theme" onChange={handleThemeChange} value={theme}>
+          <select
+            name="theme"
+            onChange={(e) => setTheme(e.target.value)}
+            value={theme}
+            required
+          >
+            <option value="">Selecciona</option>
             <option value="clasicos">Clásicos</option>
             <option value="ocasion">Ocasión</option>
             <option value="rally">Rally</option>
@@ -84,13 +105,6 @@ export const CreateEvent = ({ createEvent }) => {
             <option value="moto">Moto</option>
             <option value="otro">Otro</option>
           </select>
-          <input
-            type="hidden"
-            name="theme"
-            id="theme"
-            value={theme}
-            onChange={(e) => setTheme(e.target.value)}
-          />
         </fieldset>
         <fieldset>
           <label htmlFor="city">Ciudad</label>
@@ -98,8 +112,9 @@ export const CreateEvent = ({ createEvent }) => {
             type="city"
             name="city"
             id={city}
-            required
+            value={city}
             onChange={(e) => setCity(e.target.value)}
+            required
           />
         </fieldset>
         <fieldset>
@@ -108,15 +123,16 @@ export const CreateEvent = ({ createEvent }) => {
             type="date"
             name="date"
             id={date}
-            required
+            value={date}
             onChange={(e) => setDate(e.target.value)}
+            required
           />
         </fieldset>
-        <button>Publicar</button>
-        {error ? <p>{error}</p> : null}
+        <button className="post-btn">Publicar</button>
+        {errorMsg ? <p>{errorMsg}</p> : null}
         {loading ? <p>Publicando...</p> : null}
       </form>
-    </>
+    </div>
   );
 };
 

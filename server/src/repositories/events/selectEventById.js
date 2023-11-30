@@ -5,9 +5,18 @@ const selectEventById = async (eventId) => {
 
   //Seleccionamos la info del evento incluidos los asistentes
   const [[evento]] = await pool.query(
-    "SELECT events.*, COUNT(attendees.id) AS attendees FROM events LEFT JOIN attendees ON events.id = attendees.eventId WHERE events.id = ? GROUP BY events.id",
+    `
+      SELECT 
+        e.*, 
+        COUNT(a.id) AS attendees 
+      FROM events e
+      LEFT JOIN attendees a ON e.id = a.eventId 
+      WHERE e.id = ? 
+      GROUP BY e.id
+    `,
     [eventId]
   );
+
   return evento;
 };
 

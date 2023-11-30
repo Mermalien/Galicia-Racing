@@ -1,18 +1,9 @@
-import PropTypes from "prop-types";
-
-const EventFooter = ({ eventId, attendees }) => {
+const EventFooter = () => {
   return (
     <footer className="event-footer">
-      <div>
-        <p>{attendees} inscritos</p>
-      </div>
+      <div></div>
     </footer>
   );
-};
-
-EventFooter.propTypes = {
-  eventId: PropTypes.number.isRequired,
-  attendees: PropTypes.number,
 };
 
 export default EventFooter;

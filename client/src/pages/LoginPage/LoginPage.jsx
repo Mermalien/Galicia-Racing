@@ -1,3 +1,4 @@
+import "./LoginPage.css";
 import { useContext, useState } from "react";
 import { loginUserService } from "../../services/userService";
 import { useNavigate } from "react-router-dom";
@@ -8,23 +9,31 @@ export const LoginPage = () => {
   const { login } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
+
   const handleForm = async (e) => {
-    e.preventDefault();
-
     try {
-      const token = await loginUserService({ email, password });
+      e.preventDefault();
 
-      login(token);
+      const body = await loginUserService({ email, password });
+
+      // Si hay algún error lo lanzamos.
+      if (body.status === "error") {
+        throw new Error(body.message);
+      }
+
+      login(body.data.token);
+
       navigate("/");
     } catch (error) {
-      setError(error.message);
+      setErrorMsg(error.message);
     }
   };
+
   return (
-    <section>
+    <section className="login-page">
       <h1>Inicia sesión</h1>
-      <form onSubmit={handleForm}>
+      <form onSubmit={handleForm} className="login-form">
         <fieldset>
           <label htmlFor="email">Email</label>
           <input
@@ -48,8 +57,8 @@ export const LoginPage = () => {
           />
         </fieldset>
 
-        <button>Inicia sesión</button>
-        {error ? <p>{error}</p> : null}
+        <button className="login-button">Inicia sesión</button>
+        {errorMsg && <p>{errorMsg}</p>}
       </form>
     </section>
   );

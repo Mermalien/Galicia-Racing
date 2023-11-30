@@ -6,7 +6,7 @@ const insertUserInDDBB = async (user) => {
     email,
     encryptedPassword,
     biografia,
-    avatar,
+    avatarName,
     registrationCode,
   } = user;
 
@@ -14,7 +14,7 @@ const insertUserInDDBB = async (user) => {
 
   const [{ insertId }] = await pool.query(
     "INSERT INTO users (name, email, password, biografia, avatar, registrationCode) VALUES (?, ?, ?, ?, ?, ?)",
-    [name, email, encryptedPassword, biografia, avatar, registrationCode]
+    [name, email, encryptedPassword, biografia, avatarName, registrationCode]
   );
 
   return insertId;

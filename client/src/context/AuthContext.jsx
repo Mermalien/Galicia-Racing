@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { createContext, useEffect, useState } from "react";
 import { getMyDataService } from "../services/userService";
 
@@ -5,14 +6,9 @@ import { getMyDataService } from "../services/userService";
 export const AuthContext = createContext(null);
 
 // Componente que provee el contexto de autenticación
-
-export const AuthContextProviderComponent = ({ children }) => {
+export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem("token") || "");
   const [user, setUser] = useState(null);
-  //console.log(user);
-  useEffect(() => {
-    localStorage.setItem("token", token);
-  }, [token]);
 
   useEffect(() => {
     const getUserData = async () => {
@@ -26,17 +22,18 @@ export const AuthContextProviderComponent = ({ children }) => {
       }
     };
 
-    //console.log(typeof token);
     if (token) getUserData();
   }, [token, setToken]);
 
   //Iniciar sesión
   const login = (token) => {
+    localStorage.setItem("token", token);
     setToken(token);
   };
 
   // Cerrar sesión
   const logout = () => {
+    localStorage.removeItem("token");
     setToken("");
     setUser(null);
   };
@@ -46,4 +43,8 @@ export const AuthContextProviderComponent = ({ children }) => {
       {children}
     </AuthContext.Provider>
   );
+};
+
+AuthProvider.propTypes = {
+  children: PropTypes.node,
 };

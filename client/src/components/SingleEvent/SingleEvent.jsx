@@ -12,36 +12,56 @@ import {
 } from "../../services/eventService";
 import { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
-import { ErrorMessage } from "../ErrorMessage";
-import { useNavigate } from "react-router-dom";
 
-export const SingleEvent = ({ eventItem, removeEvent }) => {
-  const { token, user } = useContext(AuthContext);
+import { Link, useNavigate } from "react-router-dom";
+
+export const SingleEvent = ({ eventItem, removeEvent, events, setEvents }) => {
   const navigate = useNavigate();
-  const [attendee, setAttendee] = useState(false);
-  const [error, setError] = useState("");
+  const { user } = useContext(AuthContext);
+  const [attendees, setAttendees] = useState(0);
+  const [marked, setMarked] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
-  if (error) return <ErrorMessage message={error} />;
+  const eventId = eventItem.id;
 
   //Manejador de inscripciones a los eventos
-  const handleAttendee = async (userId, eventId) => {
+  const handleAttendee = async (e) => {
     try {
-      await attendeeService({ token, eventId });
-      if (userId) {
-        setAttendee(!attendee);
+      e.preventDefault();
+      setErrorMsg("");
+
+      const body = await attendeeService(eventItem.id);
+
+      // Actualizamos el evento concreto para agregar o eliminar un asistente.
+      setEvents(
+        events.map((currentEvent) => {
+          // Actualizamos únicamente el evento que estamos modificando.
+          if (currentEvent.id === eventItem.id) {
+            if (marked) {
+              currentEvent.attendees -= 1;
+            } else {
+              currentEvent.attendees += 1;
+            }
+          }
+          return currentEvent;
+        })
+      );
+
+      setMarked(!marked);
+
+      // Si hay algún error lo lanzamos.
+      if (body.status === "error") {
+        throw new Error(body.message);
       }
     } catch (error) {
-      setError(error.message);
+      setErrorMsg(error.message);
     }
-    return console.log(
-      `Hiciste click en inscribirse al evento ${eventItem.id}`
-    );
   };
 
   //Eliminar una publicación si es tuya
   const deleteEvent = async (eventId, user) => {
     try {
-      await deleteEventService({ eventId, token });
+      await deleteEventService(eventId);
 
       if (user) {
         removeEvent(eventId);
@@ -49,45 +69,61 @@ export const SingleEvent = ({ eventItem, removeEvent }) => {
         navigate("/");
       }
     } catch (error) {
-      setError(error.message);
+      setErrorMsg(error.message);
     }
   };
 
   return (
     <>
       <div className="single-event">
-        <EventHeader title={eventItem.title} />
+        <EventHeader title={eventItem.title} className="event-header" />
         <EventBody
           image={eventItem.image}
-          description={eventItem.description}
           theme={eventItem.theme}
           city={eventItem.city}
           date={eventItem.date}
+          className="event-body"
         />
+        <div className="eventFooter">
+          <EventFooter
+            eventId={eventItem.id}
+            attendees={eventItem.attendees}
+            className="event-footer"
+          />
 
-        <EventFooter eventId={eventItem.id} attendees={eventItem.attendees} />
+          <div className="if-user-btns">
+            <Link to={`/events/${eventId}`}>
+              <p className="p-link">VER MÁS</p>
+            </Link>
+            {user ? (
+              <div className="attendees-count">
+                {eventItem.attendees} inscritos
+                <button className="attendee-btn" onClick={handleAttendee}>
+                  {marked ? "YA NO ME INTERESA" : "ME INTERESA"}
+                </button>
+              </div>
+            ) : null}
+
+            {user?.id === eventItem.userId ? (
+              <button
+                className="delete-btn"
+                onClick={() => {
+                  if (
+                    window.confirm(
+                      "Parece que quieres eliminar una publicación"
+                    )
+                  )
+                    deleteEvent(eventItem.id);
+                }}
+              >
+                ELIMINAR
+              </button>
+            ) : null}
+          </div>
+        </div>
       </div>
 
-      {user ? (
-        <button
-          className={`attendee-btn ${eventItem.attendee ? "asiste" : ""}`}
-          onClick={() => handleAttendee(eventItem.id)}
-        >
-          Inscribirse
-        </button>
-      ) : null}
-
-      {user?.id === eventItem.userId ? (
-        <button
-          className="delete-btn"
-          onClick={() => {
-            if (window.confirm("Parece que quieres eliminar una publicación"))
-              deleteEvent(eventItem.id);
-          }}
-        >
-          Eliminar
-        </button>
-      ) : null}
+      {errorMsg && <p>{errorMsg}</p>}
     </>
   );
 };

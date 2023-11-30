@@ -25,14 +25,15 @@ export const Auth = () => {
         </Link>
       </p>
       <button
+        className="logout-btn"
         onClick={() => logout()}
         style={{
           color: "white",
           backgroundColor: "black",
-          fontSize: "19px",
+          border: "none",
         }}
       >
-        Salir
+        Cerrar sesión
       </button>
     </section>
   ) : (

@@ -1,12 +1,14 @@
 import "./eventBody.css";
+// Usamos moment para formatear la fecha
+import moment from "moment/moment";
 import PropTypes from "prop-types";
 const baseURL = import.meta.env.VITE_APP_BACKEND;
 
 const EventBody = ({ description, image, theme, city, date }) => {
+  const formattedDate = moment(date).format("DD-MM-YYYY");
   return (
     <div className="event-body">
       <div>
-        <p>{description}</p>
         {image && (
           <img
             className="event-image"
@@ -14,9 +16,12 @@ const EventBody = ({ description, image, theme, city, date }) => {
             alt={"imagen de portada"}
           />
         )}
-        <p>
-          {theme} {city} {date}
-        </p>
+        <p className="descriptionP">{description}</p>
+        <div className="dataP">
+          <p>Temática: {theme}</p>
+          <p>Ciudad: {city}</p>
+          <p>Fecha: {formattedDate}</p>
+        </div>
       </div>
     </div>
   );

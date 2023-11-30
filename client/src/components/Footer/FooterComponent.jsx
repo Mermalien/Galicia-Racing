@@ -3,7 +3,16 @@ import "./Footer.css";
 const FooterComponent = () => {
   return (
     <footer>
-      <p>&copy; Andrea 2023</p>
+      <p>
+        <a
+          href="https://www.linkedin.com/in/andrea-guisande-nieto"
+          target="_blank"
+          rel="noreferrer"
+        >
+          {" "}
+          &copy; Andrea 2023
+        </a>
+      </p>
     </footer>
   );
 };

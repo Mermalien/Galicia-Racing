@@ -1,7 +1,12 @@
 div.app > footer {
-    padding: 2rem;
-    text-align: center;
-    letter-spacing: 1px;
-    background-color: black;
-    color: white;
+  padding: 2rem;
+  text-align: center;
+  letter-spacing: 1px;
+  background-color: black;
+  color: white;
+}
+
+footer a {
+  color: white;
+  text-decoration: none;
 }

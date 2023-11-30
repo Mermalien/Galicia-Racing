@@ -1,6 +1,6 @@
 const createEventSchema = require("../../schemas/events/createEventSchema");
-const { insertEvent, insertEventImage } = require("../../repositories/events");
-const { processAndSaveImage, generateError } = require("../../utils");
+const { insertEvent } = require("../../repositories/events");
+const { saveImg, generateError, validateSchema } = require("../../utils");
 
 const createEvent = async (req, res, next) => {
   try {
@@ -8,8 +8,9 @@ const createEvent = async (req, res, next) => {
     const userId = req.auth.id;
 
     //Validamos el body de la petición y nos traemos los datos
-    await createEventSchema.validateAsync(req.body);
     const { title, description, theme, city, date } = req.body;
+
+    await validateSchema(createEventSchema, req.body);
 
     const image = req.files?.image;
 
@@ -17,20 +18,20 @@ const createEvent = async (req, res, next) => {
       generateError("Image is required", 400);
     }
 
-    const imageName = await processAndSaveImage(image.data);
+    const imageName = await saveImg(image.data, 800);
 
     //Insertamos el evento publicado en la BBDD
     const insertedEventId = await insertEvent({
       userId,
       title,
       description,
-      image: imageName,
+      imageName,
       theme,
       city,
       date,
     });
 
-    res.status(201).send({
+    res.send({
       status: "Evento creado",
       data: {
         id: insertedEventId,

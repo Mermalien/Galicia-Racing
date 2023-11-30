@@ -22,7 +22,7 @@ export const useEvents = () => {
       }
     };
     getEvents();
-  });
+  }, [error]);
 
   const createEvent = (data) => {
     setEvents([data, ...events]);
@@ -32,5 +32,5 @@ export const useEvents = () => {
     setEvents(events.filter((item) => item.id !== id));
   };
 
-  return { events, loading, error, createEvent, deleteEvent };
+  return { events, setEvents, loading, error, createEvent, deleteEvent };
 };

@@ -4,52 +4,44 @@ const baseURL = import.meta.env.VITE_APP_BACKEND;
 import { getToken } from "../utils/getToken";
 
 // Lista de publicaciones
-export const listEventsService = async () => {
-  const response = await fetch(`${baseURL}/events`);
+export const listEventsService = async (theme = "", city = "") => {
+  const response = await fetch(`${baseURL}/events?theme=${theme}&city=${city}`);
 
-  const json = await response.json();
+  const body = await response.json();
 
-  if (!response.ok) {
-    throw new Error(json.message);
-  }
-
-  return json.data;
+  return body.data;
 };
 
 // Publicaciones de una en una
-export const singleEventService = async (id) => {
-  const response = await fetch(`${baseURL}/events/${id}`);
+export const singleEventService = async (eventId) => {
+  const response = await fetch(`${baseURL}/events/${eventId}`);
 
-  const json = await response.json();
+  const body = await response.json();
 
-  if (!response.ok) {
-    throw new Error(json.message);
-  }
-
-  return json.data;
+  return body;
 };
 
 // Crear publicación
-export const createEventService = async ({ data }) => {
+export const createEventService = async (formData) => {
   const token = getToken();
 
   const response = await fetch(`${baseURL}/createEvent`, {
     method: "POST",
-    body: data,
+    body: formData,
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
 
-  const json = await response.json();
-  if (!response.ok) {
-    throw new Error(json.message);
-  }
-  return json.data;
+  const body = await response.json();
+
+  return body.data;
 };
 
 // Eliminar publicación
-export const deleteEventService = async ({ eventId, token }) => {
+export const deleteEventService = async (eventId) => {
+  const token = getToken();
+
   const response = await fetch(`${baseURL}/deleteEvent/${eventId}`, {
     method: "DELETE",
     headers: {
@@ -57,46 +49,23 @@ export const deleteEventService = async ({ eventId, token }) => {
     },
   });
 
-  const json = await response.json();
-  if (!response.ok) {
-    throw new Error(json.message);
-  }
-};
-
-//Filtrar publicación
-export const filterEventCityService = async (city) => {
-  const response = await fetch(`${baseURL}/events?${city}`);
   const body = await response.json();
-  if (!response.ok) {
-    throw new Error(body.message);
-  }
-  return body.data;
-};
 
-export const filterEventThemeService = async (theme) => {
-  const response = await fetch(`${baseURL}/events?${theme}`);
-  const body = await response.json();
-  if (!response.ok) {
-    throw new Error(body.message);
-  }
-  return body.data;
+  return body;
 };
 
 // Inscribirse o quitarse de un evento
+export const attendeeService = async (eventId) => {
+  const token = getToken();
 
-export const attendeeService = async ({ token, eventId }) => {
   const response = await fetch(`${baseURL}/attendees/${eventId}`, {
     method: "POST",
-    body: eventId,
     headers: {
-      "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
   });
 
   const body = await response.json();
-  if (!response.ok) {
-    throw new Error(body.message);
-  }
-  return body.data;
+
+  return body;
 };

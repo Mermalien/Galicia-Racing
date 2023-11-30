@@ -1,4 +1,39 @@
-.user-page{
-    flex-grow: 1;
-    text-align: center;
+.user-page {
+  width: 100vw;
+  height: 100vh;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(to top, #4785c4, white);
+}
+
+.user-data-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  text-align: center;
+}
+
+h3,
+.myEmail {
+  height: 3rem;
+}
+.myBio {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas: "texto imagen";
+  text-align: justify;
+  font-weight: bold;
+}
+.bio {
+  display: grid;
+  grid-area: texto;
+  padding: 1rem;
+}
+
+.user-avatar {
+  grid-area: imagen;
+  margin-top: 2rem;
+  height: 9rem;
+  margin-left: 10%;
 }

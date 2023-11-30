@@ -1,18 +1,19 @@
-.searcher{
-    display: flex;
-    margin: 2rem;
-    width: 70%;
-    align-items: center;
-    justify-content: center;
+.searcher {
+  margin: 2rem;
+  width: 70%;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
-.searcher input{
-    width: 50%;
+.searcher input {
+  width: 50%;
+  font-size: 17px;
 }
 
-.searcher > .svg{
-    width: 40px;
-    height: 40px;
-    border: none;
-    background-color: white;
+.searcher > .svg {
+  min-width: 40px;
+  min-height: 40px;
+  border: none;
+  background-color: transparent;
 }

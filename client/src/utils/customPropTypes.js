@@ -9,7 +9,7 @@ export const eventItemPropTypes = PropTypes.shape({
   city: PropTypes.string.isRequired,
   date: PropTypes.string.isRequired,
   attendees: PropTypes.number,
-  markedByMe: PropTypes.bool,
+  marked: PropTypes.bool,
   userId: PropTypes.number.isRequired,
 });
 

@@ -6,7 +6,6 @@ const fileUpload = require("express-fileupload");
 //Controllers de los users
 const {
   createUser,
-  activateUser,
   loginUser,
   getUser,
   getMe,
@@ -17,19 +16,19 @@ const {
   createEvent,
   getEvents,
   getSingleEvent,
+  getEventByCity,
   deleteEvent,
 } = require("./src/controllers/events");
 
 //Controller inscripciones
 const { attendeeController } = require("./src/controllers/attendees");
 
-//Middlewares
-const {
-  handleError,
-  handleNotFound,
-  validateAuth,
-} = require("./src/middlewares");
-const { selectEventById } = require("./src/repositories/events");
+//Controller errores
+const { handleError, handleNotFound } = require("./src/controllers/errors");
+
+//Controller autorización
+const validateAuth = require("./src/middlewares/validateAuth");
+const getEventByTheme = require("./src/controllers/events/getEventByTheme");
 
 const app = express();
 const { PORT } = process.env;
@@ -37,13 +36,11 @@ const { PORT } = process.env;
 app.use(cors());
 app.use(express.json());
 app.use(fileUpload());
-app.use(express.static("src/uploads/events"));
-app.use(express.static("src/uploads/users"));
+app.use(express.static(process.env.UPLOADS_DIR));
 
 //Endpoints de los users
 app.post("/register", createUser);
 app.post("/login", loginUser);
-app.get("/activate/:registrationCode", activateUser);
 app.get("/users/:id", validateAuth, getUser);
 app.get("/user", validateAuth, getMe);
 
@@ -51,14 +48,18 @@ app.get("/user", validateAuth, getMe);
 app.get("/events", getEvents);
 app.get("/events/:eventId", getSingleEvent);
 
+// ESTE GET NO ESTOY SEGURA DE QUE FUNCIONE!!!
+app.get("/events/filterByCity/:city", getEventByCity);
+app.get("/events/filterByTheme/:theme", getEventByTheme);
+
 app.post("/createEvent", validateAuth, createEvent);
 app.post("/attendees/:eventId", validateAuth, attendeeController);
 
 app.delete("/deleteEvent/:eventId", validateAuth, deleteEvent);
 
 //Middlewares de errores
-app.use(handleNotFound);
 app.use(handleError);
+app.use(handleNotFound);
 
 // Lanzamos el server
 app.listen(PORT, () => {

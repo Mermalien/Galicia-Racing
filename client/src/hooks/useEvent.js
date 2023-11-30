@@ -1,25 +1,25 @@
 import { useEffect, useState } from "react";
 import { singleEventService } from "../services/eventService";
 
-export const useEvent = (id) => {
-  const [event, setEvent] = useState([]);
+export const useEvent = (eventId) => {
+  const [eventItem, setEventItem] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
 
   useEffect(() => {
     const loadEvent = async () => {
       try {
-        const data = await singleEventService(id);
-        setEvent(data);
+        const data = await singleEventService(eventId);
+        setEventItem(data);
       } catch (error) {
-        setError(error.message);
+        setErrorMsg(error.message);
       } finally {
         setLoading(false);
       }
     };
 
     loadEvent();
-  }, [id]);
+  }, [eventId]);
 
-  return { event, loading, error };
+  return { eventItem, loading, errorMsg };
 };

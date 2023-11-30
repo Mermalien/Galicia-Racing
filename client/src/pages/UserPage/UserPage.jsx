@@ -15,17 +15,22 @@ export const UserPage = () => {
 
   return (
     <div className="user-page">
-      <h2>Hola {user.name}!</h2>
+      <h2>Usuario {user.name}</h2>
 
       <div className="user-data-container">
-        <h3>Tus datos de usuario</h3>
-        <p>Email actual {user.email}</p>
-        <p>{user.biografia}</p>
-        <p>
-          <img src={`${baseURL}/${user.avatar}`} alt="avatar-de-usuario">
-            {user.avatar}
-          </img>
+        <p className="myEmail">
+          Tu email actual es <strong>{user.email}</strong>{" "}
         </p>
+        <section className="myBio">
+          <p className="bio">Biografía: {user.biografia}</p>
+          <p>
+            <img
+              src={`${baseURL}/${user.avatar}`}
+              alt="avatar-de-usuario"
+              className="user-avatar"
+            ></img>
+          </p>
+        </section>
       </div>
     </div>
   );

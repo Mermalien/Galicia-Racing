@@ -2,27 +2,20 @@
 const baseURL = import.meta.env.VITE_APP_BACKEND;
 
 // Registro
-export const registerUserService = async (data) => {
-  console.log(data);
+export const registerUserService = async (formData) => {
   const response = await fetch(`${baseURL}/register`, {
     method: "POST",
-    headers: {
-      "Content-type": "application/json",
-    },
-    body: JSON.stringify({ data }),
+    body: formData,
   });
+
   const body = await response.json();
 
-  if (!response.ok) {
-    throw new Error(body.message);
-  }
-  return body.data;
+  return body;
 };
 
 // Login
 
 export const loginUserService = async ({ email, password }) => {
-  //console.log(email, password);
   const response = await fetch(`${baseURL}/login`, {
     method: "POST",
     headers: {
@@ -30,12 +23,10 @@ export const loginUserService = async ({ email, password }) => {
     },
     body: JSON.stringify({ email, password }),
   });
-  const body = await response.json();
-  if (!response.ok) {
-    throw new Error(body.message);
-  }
 
-  return body.data.token;
+  const body = await response.json();
+
+  return body;
 };
 
 //Mi info
@@ -48,9 +39,6 @@ export const getMyDataService = async (token) => {
   });
   const body = await response.json();
 
-  if (!response.ok) {
-    throw new Error(body.message);
-  }
   return body.data;
 };
 
@@ -61,9 +49,7 @@ export const getUserDataService = async (id, token) => {
     },
   });
 
-  const json = await response.json();
-  if (!response.ok) {
-    throw new Error(json.message);
-  }
-  return json.data;
+  const body = await response.json();
+
+  return body.data;
 };

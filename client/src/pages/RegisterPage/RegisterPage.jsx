@@ -10,38 +10,48 @@ export const RegisterPage = () => {
   const [email, setEmail] = useState("");
   const [pass1, setPass1] = useState("");
   const [pass2, setPass2] = useState("");
-  const [biografia, setBiografia] = useState("");
+  const [bio, setBio] = useState("");
   const [avatar, setAvatar] = useState("");
-  const [error, setError] = useState("");
-
-  if (error) return <p>Ups algo ha fallado</p>;
+  const [errorMsg, setErrorMsg] = useState("");
 
   // Manejador del registro
   const handleRegister = async (e) => {
-    e.preventDefault();
-    setError("");
-
-    // Vemos que las password sean iguales
-    if (pass1 !== pass2) {
-      setError("Las contraseñas no coinciden");
-      return;
-    }
-
     try {
-      await registerUserService({
-        name,
-        email,
-        password: pass1,
-        biografia,
-        avatar,
-      });
+      e.preventDefault();
+      setErrorMsg("");
+
+      // Vemos que las password sean iguales
+      if (pass1 !== pass2) {
+        setErrorMsg("Las contraseñas no coinciden");
+        return;
+      }
+
+      // Creamos un objeto FormData.
+      const formData = new FormData();
+
+      // Añadimos las propiedades.
+      formData.append("name", name);
+      formData.append("email", email);
+      formData.append("password", pass1);
+      formData.append("bio", bio);
+
+      // Si existe avatar lo añadimos.
+      if (avatar) formData.append("avatar", avatar);
+
+      // Registramos el usuario en la base de datos.
+      const body = await registerUserService(formData);
+
+      // Si hay algún error lo lanzamos.
+      if (body.status === "error") {
+        throw new Error(body.message);
+      }
+
       navigate("/login");
-      console.log("Registro exitoso");
     } catch (error) {
-      setError(error.message);
-      console.log("Registro fallido");
+      setErrorMsg(error.message);
     }
   };
+
   return (
     <div className="register-page">
       <section className="register">
@@ -96,9 +106,9 @@ export const RegisterPage = () => {
             <input
               type="text"
               id="biografia"
-              value={biografia}
+              value={bio}
               required
-              onChange={(e) => setBiografia(e.target.value)}
+              onChange={(e) => setBio(e.target.value)}
             ></input>
           </fieldset>
 
@@ -109,12 +119,13 @@ export const RegisterPage = () => {
               name="avatar"
               id={avatar}
               accept={"image/*"}
-              onChange={(e) => setAvatar(e.target.value)}
+              onChange={(e) => setAvatar(e.target.files[0])}
             ></input>
           </fieldset>
 
-          <button>Registro</button>
+          <button className="register-btn">Registro</button>
         </form>
+        {errorMsg && <p>{errorMsg}</p>}
       </section>
     </div>
   );

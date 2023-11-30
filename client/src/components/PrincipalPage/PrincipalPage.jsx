@@ -6,18 +6,18 @@ import { ListOfEvents } from "../ListOfEvents/ListOfEvents";
 import { Searcher } from "../Searcher/Searcher";
 
 export const PrincipalPage = () => {
-  const { events, loading, error } = useEvents();
+  const { events, setEvents, loading, error } = useEvents();
 
   if (loading) return <p>Cargando...</p>;
   if (error) return <ErrorMessage message={error} />;
 
   return (
     <section className="principal-page">
-      <Searcher />
+      <Searcher className="searcher" setEvents={setEvents} />
       <div className="list-events">
         <h1>Próximos eventos</h1>
         <div className="list-of-events">
-          <ListOfEvents item={events} />
+          <ListOfEvents events={events} setEvents={setEvents} />
         </div>
       </div>
     </section>
