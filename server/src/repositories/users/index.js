@@ -2,10 +2,12 @@ const insertUserInDDBB = require("./insertUserInDDBB");
 const selectUserByEmail = require("./selectUserByEmail");
 const selectUserById = require("./selectUserById");
 const selectUserByRegistrationCode = require("./selectUserByRegistrationCode");
-const deleteUserById = require("./deleteUserById");
 const createRegistrationCode = require("./createRegistrationCode");
 const deleteRegistrationCode = require("./deleteRegistrationCode");
 const insertUserAvatar = require("./insertUserAvatar");
+const updateUserById = require("./updateUserById");
+const updateUserAvatar = require("./updateUserAvatar");
+const deleteUserById = require("./deleteUserById");
 
 module.exports = {
   insertUserInDDBB,
@@ -16,4 +18,6 @@ module.exports = {
   createRegistrationCode,
   deleteRegistrationCode,
   insertUserAvatar,
+  updateUserById,
+  updateUserAvatar,
 };

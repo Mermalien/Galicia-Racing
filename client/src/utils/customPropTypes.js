@@ -26,3 +26,12 @@ export const userPropTypes = PropTypes.shape({
   biografia: PropTypes.string,
   avatar: PropTypes.string,
 });
+
+export const updateUserPropTypes = PropTypes.shape({
+  id: PropTypes.number.isRequired,
+  name: PropTypes.string.optional,
+  email: PropTypes.string,
+  password: PropTypes.string,
+  bio: PropTypes.string,
+  avatar: PropTypes.string,
+});

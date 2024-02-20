@@ -46,7 +46,7 @@ export const LoginPage = () => {
           />
         </fieldset>
         <fieldset>
-          <label htmlFor="pass">Password</label>
+          <label htmlFor="pass">Contraseña</label>
           <input
             type="password"
             name="pass"

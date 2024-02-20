@@ -8,7 +8,7 @@ async function main() {
 
     console.log("Borrando tablas");
 
-    // await connection.query("DROP TABLE IF EXISTS attendees, events, users");
+    await connection.query("DROP TABLE IF EXISTS attendees, events, users");
 
     console.log("Creando tablas");
 

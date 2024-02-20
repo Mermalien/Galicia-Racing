@@ -4,13 +4,13 @@ import { AuthContext } from "../context/AuthContext";
 import { Link } from "react-router-dom";
 
 export const Auth = () => {
-  const { user, logout } = useContext(AuthContext);
+  const { currentUser, logout } = useContext(AuthContext);
 
-  return user ? (
+  return currentUser ? (
     <section className="btns-user">
       <p>
         <Link
-          to={`/users/${user.id}`}
+          to={`/users/${currentUser.id}`}
           style={{ color: "white", textDecoration: "none" }}
         >
           Mi perfil
@@ -21,7 +21,7 @@ export const Auth = () => {
           to={"/createEvent"}
           style={{ color: "white", textDecoration: "none" }}
         >
-          Publica algo
+          Publicar
         </Link>
       </p>
       <button
@@ -33,7 +33,7 @@ export const Auth = () => {
           border: "none",
         }}
       >
-        Cerrar sesión
+        Salir
       </button>
     </section>
   ) : (

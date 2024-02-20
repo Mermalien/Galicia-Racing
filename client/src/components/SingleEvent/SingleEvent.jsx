@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import "./SingleEvent.css";
 import {
   eventItemPropTypes,
@@ -5,31 +6,31 @@ import {
 } from "../../utils/customPropTypes";
 import EventHeader from "./EventHeader/EventHeader";
 import EventBody from "./EventBody/EventBody";
-import EventFooter from "./EventFooter/EventFooter";
 import {
   attendeeService,
   deleteEventService,
 } from "../../services/eventService";
 import { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
-
 import { Link, useNavigate } from "react-router-dom";
+import EventFooter from "./EventFooter/EventFooter";
 
 export const SingleEvent = ({ eventItem, removeEvent, events, setEvents }) => {
   const navigate = useNavigate();
-  const { user } = useContext(AuthContext);
-  const [attendees, setAttendees] = useState(0);
-  const [marked, setMarked] = useState(false);
+  const { currentUser } = useContext(AuthContext);
+  const [attendees, setAttendees] = useState([]);
+  const [marked, setMarked] = useState(() => {
+    const storedValue = localStorage.getItem(`attendees_${eventItem.id}`);
+    return storedValue ? JSON.parse(storedValue) : false;
+  });
   const [errorMsg, setErrorMsg] = useState("");
 
   const eventId = eventItem.id;
-
   //Manejador de inscripciones a los eventos
   const handleAttendee = async (e) => {
     try {
       e.preventDefault();
       setErrorMsg("");
-
       const body = await attendeeService(eventItem.id);
 
       // Actualizamos el evento concreto para agregar o eliminar un asistente.
@@ -48,6 +49,11 @@ export const SingleEvent = ({ eventItem, removeEvent, events, setEvents }) => {
       );
 
       setMarked(!marked);
+      localStorage.setItem(
+        `attendees_${eventItem.id}`,
+        JSON.stringify(!marked)
+      );
+      setAttendees(!attendees);
 
       // Si hay algún error lo lanzamos.
       if (body.status === "error") {
@@ -65,8 +71,6 @@ export const SingleEvent = ({ eventItem, removeEvent, events, setEvents }) => {
 
       if (user) {
         removeEvent(eventId);
-      } else {
-        navigate("/");
       }
     } catch (error) {
       setErrorMsg(error.message);
@@ -79,47 +83,45 @@ export const SingleEvent = ({ eventItem, removeEvent, events, setEvents }) => {
         <EventHeader title={eventItem.title} className="event-header" />
         <EventBody
           image={eventItem.image}
+          description={eventItem.description}
           theme={eventItem.theme}
           city={eventItem.city}
           date={eventItem.date}
           className="event-body"
         />
-        <div className="eventFooter">
+
+        <div className="if-user-btns">
+          <Link to={`/events/${eventId}`}>
+            <p className="p-link">VER MÁS</p>
+          </Link>
+
           <EventFooter
-            eventId={eventItem.id}
             attendees={eventItem.attendees}
-            className="event-footer"
+            eventId={eventItem.id}
+            className="single-event-footer"
           />
-
-          <div className="if-user-btns">
-            <Link to={`/events/${eventId}`}>
-              <p className="p-link">VER MÁS</p>
-            </Link>
-            {user ? (
-              <div className="attendees-count">
-                {eventItem.attendees} inscritos
-                <button className="attendee-btn" onClick={handleAttendee}>
-                  {marked ? "YA NO ME INTERESA" : "ME INTERESA"}
-                </button>
-              </div>
-            ) : null}
-
-            {user?.id === eventItem.userId ? (
-              <button
-                className="delete-btn"
-                onClick={() => {
-                  if (
-                    window.confirm(
-                      "Parece que quieres eliminar una publicación"
-                    )
-                  )
-                    deleteEvent(eventItem.id);
-                }}
-              >
-                ELIMINAR
+          {currentUser ? (
+            <div className="attendees-count">
+              <button className="attendee-btn" onClick={handleAttendee}>
+                {marked ? "YA NO ME INTERESA" : "ME INTERESA"}
               </button>
-            ) : null}
-          </div>
+            </div>
+          ) : null}
+          {currentUser?.id === eventItem.userId ? (
+            <button
+              className="delete-btn"
+              onClick={() => {
+                if (
+                  window.confirm("Parece que quieres eliminar una publicación")
+                )
+                  deleteEvent(eventItem.id);
+                window.location.reload();
+                navigate("/");
+              }}
+            >
+              ELIMINAR
+            </button>
+          ) : null}
         </div>
       </div>
 
@@ -131,4 +133,6 @@ export const SingleEvent = ({ eventItem, removeEvent, events, setEvents }) => {
 SingleEvent.propTypes = {
   eventItem: eventItemPropTypes,
   removeEvent: deleteEventPropTypes,
+  events: PropTypes.arrayOf(eventItemPropTypes),
+  setEvents: PropTypes.func,
 };

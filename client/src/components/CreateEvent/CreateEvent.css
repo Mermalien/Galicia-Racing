@@ -8,43 +8,10 @@
   background: linear-gradient(to top, #4785c4, white);
 }
 
-h2 {
-  text-align: center;
-  padding: 1rem;
-  margin-top: 1rem;
-}
-
-.new-event {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  padding: 2rem;
-  gap: 1rem;
-}
-
-fieldset {
-  border: none;
-  height: 4rem;
-}
-
-label {
-  margin: 5%;
-}
-
-input {
-  border: none;
-  border-bottom: solid 1px black;
-  margin-top: 0.5rem;
-}
-
-.input-image {
-  border: none;
-}
-
 .post-btn {
   width: 40%;
   height: 10%;
-  font-size: 18px;
+  font-size: 19px;
   font-weight: bold;
   align-self: center;
   background-color: transparent;

@@ -3,15 +3,17 @@ const express = require("express");
 const cors = require("cors");
 const fileUpload = require("express-fileupload");
 
-//Controllers de los users
+// Controllers de los users
 const {
   createUser,
   loginUser,
   getUser,
   getMe,
+  updateUserData,
+  deleteUser,
 } = require("./src/controllers/users");
 
-//Controllers de los eventos
+// Controllers de los eventos
 const {
   createEvent,
   getEvents,
@@ -20,15 +22,13 @@ const {
   deleteEvent,
 } = require("./src/controllers/events");
 
-//Controller inscripciones
+// Controller inscripciones
 const { attendeeController } = require("./src/controllers/attendees");
 
-//Controller errores
+// Otros
 const { handleError, handleNotFound } = require("./src/controllers/errors");
-
-//Controller autorización
-const validateAuth = require("./src/middlewares/validateAuth");
 const getEventByTheme = require("./src/controllers/events/getEventByTheme");
+const validateAuth = require("./src/middlewares/validateAuth");
 
 const app = express();
 const { PORT } = process.env;
@@ -38,26 +38,27 @@ app.use(express.json());
 app.use(fileUpload());
 app.use(express.static(process.env.UPLOADS_DIR));
 
-//Endpoints de los users
+// Endpoints de los users
 app.post("/register", createUser);
 app.post("/login", loginUser);
 app.get("/users/:id", validateAuth, getUser);
 app.get("/user", validateAuth, getMe);
+app.put("/user/update", validateAuth, updateUserData);
+app.delete("/deleteUser/:id", validateAuth, deleteUser);
 
-//Endpoints de los eventos
+// Endpoints de los eventos
 app.get("/events", getEvents);
 app.get("/events/:eventId", getSingleEvent);
-
-// ESTE GET NO ESTOY SEGURA DE QUE FUNCIONE!!!
 app.get("/events/filterByCity/:city", getEventByCity);
 app.get("/events/filterByTheme/:theme", getEventByTheme);
-
 app.post("/createEvent", validateAuth, createEvent);
-app.post("/attendees/:eventId", validateAuth, attendeeController);
-
 app.delete("/deleteEvent/:eventId", validateAuth, deleteEvent);
 
-//Middlewares de errores
+// Endpoints de inscritos
+app.get("/attendees/:eventId", validateAuth, attendeeController);
+app.post("/attendees/:eventId", validateAuth, attendeeController);
+
+// Middlewares de errores
 app.use(handleError);
 app.use(handleNotFound);
 

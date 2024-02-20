@@ -1,8 +1,7 @@
 .register-page {
-  display: flex;
   height: 100vh;
+  display: flex;
   flex-direction: column;
-  flex-grow: 1;
 }
 .register-btn {
   width: 40%;

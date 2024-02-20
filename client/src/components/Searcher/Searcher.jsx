@@ -1,8 +1,8 @@
+import "./Searcher.css";
+import PropTypes from "prop-types";
 import { eventItemPropTypes } from "../../utils/customPropTypes";
 import { useState } from "react";
 import { listEventsService } from "../../services/eventService";
-
-import "./Searcher.css";
 
 export const Searcher = ({ setEvents }) => {
   const [city, setCity] = useState("");
@@ -81,4 +81,5 @@ export const Searcher = ({ setEvents }) => {
 
 Searcher.propTypes = {
   events: eventItemPropTypes,
+  setEvents: PropTypes.func,
 };

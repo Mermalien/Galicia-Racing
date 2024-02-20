@@ -1,0 +1,19 @@
+.event-footer-data {
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+  border-radius: 10px;
+}
+.event-footer button {
+  height: 3rem;
+  color: rgb(20, 20, 20);
+  font-weight: bold;
+  background-color: transparent;
+  border: none;
+}
+
+.event-footer .attendees-list {
+  height: auto;
+  display: flex;
+  align-items: center;
+}

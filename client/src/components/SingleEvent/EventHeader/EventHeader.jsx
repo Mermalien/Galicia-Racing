@@ -4,8 +4,8 @@ import "./EventHeader.css";
 const EventHeader = ({ title }) => {
   return (
     <header className="event-header">
-      <div>
-        <p>{title}</p>
+      <div className="title-container">
+        <p className="title">{title}</p>
       </div>
     </header>
   );

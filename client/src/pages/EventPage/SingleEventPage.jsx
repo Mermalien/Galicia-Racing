@@ -2,30 +2,32 @@ import "./SingleEventPage.css";
 
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { singleEventService } from "../../services/eventService";
+import {
+  singleEventService,
+  totalAttendeesService,
+} from "../../services/eventService";
 import EventHeader from "../../components/SingleEvent/EventHeader/EventHeader";
 import EventBody from "../../components/SingleEvent/EventBody/EventBody";
 import EventFooter from "../../components/SingleEvent/EventFooter/EventFooter";
 
 export const SingleEventPage = () => {
-  // Obtenemos el ID del evento al que queremos acceder.
   const { eventId } = useParams();
-
-  const [event, setEvent] = useState();
+  const [eventItem, setEventItem] = useState();
+  const [attendees, setAttendees] = useState([]);
   const [errorMsg, setErrorMsg] = useState("");
 
   useEffect(() => {
     const fetchEvent = async () => {
       try {
         setErrorMsg("");
-
         const body = await singleEventService(eventId);
+        const attendeesList = await totalAttendeesService(eventId);
 
         if (body.status === "error") {
           throw new Error(body.message);
         }
-
-        setEvent(body.data);
+        setEventItem(body.data);
+        setAttendees(attendeesList.data);
       } catch (error) {
         setErrorMsg(error.message);
       }
@@ -36,18 +38,28 @@ export const SingleEventPage = () => {
 
   return (
     <>
-      {event && (
+      {eventItem && (
         <div className="single-event-page">
-          <div key={event.id} className="single-event-item">
-            <EventHeader title={event.title} className="single-event-header" />
-            <EventBody
-              description={event.description}
-              image={event.image}
-              theme={event.theme}
-              city={event.city}
-              date={event.date}
+          <div key={eventItem.id} className="single-event-item">
+            <EventHeader
+              title={eventItem.title}
+              className="single-event-header"
             />
-            <EventFooter attendees={event.attendees} />
+            <EventBody
+              description={eventItem.description}
+              image={eventItem.image}
+              theme={eventItem.theme}
+              city={eventItem.city}
+              date={eventItem.date}
+              className="single-event-item-body"
+            />
+            {attendees && (
+              <EventFooter
+                attendees={eventItem.attendees}
+                eventId={eventItem.id}
+                className="event-page-footer"
+              />
+            )}
           </div>
         </div>
       )}

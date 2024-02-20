@@ -1,6 +1,5 @@
 //URL base del backend
 const baseURL = import.meta.env.VITE_APP_BACKEND;
-
 import { getToken } from "../utils/getToken";
 
 // Lista de publicaciones
@@ -50,7 +49,6 @@ export const deleteEventService = async (eventId) => {
   });
 
   const body = await response.json();
-
   return body;
 };
 
@@ -66,6 +64,17 @@ export const attendeeService = async (eventId) => {
   });
 
   const body = await response.json();
-
+  return body;
+};
+// Lista de inscritos
+export const totalAttendeesService = async (eventId) => {
+  const token = getToken();
+  const response = await fetch(`${baseURL}/attendees/${eventId}`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const body = await response.json();
   return body;
 };

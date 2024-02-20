@@ -8,9 +8,10 @@ const selectEventById = async (eventId) => {
     `
       SELECT 
         e.*, 
-        COUNT(a.id) AS attendees 
+        GROUP_CONCAT(users.name) AS attendees 
       FROM events e
       LEFT JOIN attendees a ON e.id = a.eventId 
+      LEFT JOIN users ON a.userId = users.id
       WHERE e.id = ? 
       GROUP BY e.id
     `,

@@ -1,25 +1,29 @@
 .single-event {
   border-radius: 12px;
+  box-shadow: 0 0 15px rgb(29, 123, 238);
   width: 350px;
-  height: 600px;
   margin-bottom: 1rem;
   background-color: rgba(255, 255, 255, 0.415);
   opacity: 90%;
-  overflow-y: hidden;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.single-event .event-body .descriptionP {
+  display: none;
 }
 
 .eventFooter {
-  width: 100%;
   display: flex;
   gap: 1rem;
   padding-right: 1.7rem;
 }
 
 .if-user-btns {
-  width: 100vw;
   display: flex;
-  gap: 1rem;
-  margin-top: 1rem;
+  margin: 20px;
+  justify-content: space-around;
 }
 .attendees-count {
   display: flex;

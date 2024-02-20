@@ -6,14 +6,13 @@ export const useEvents = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  //Usamos useEffect para obtener la lista de eventos
+  // Usamos useEffect para obtener la lista de eventos
   useEffect(() => {
-    //Petición que obtiene las publicaciones
+    // Petición que obtiene las publicaciones
     const getEvents = async () => {
       try {
         const data = await listEventsService();
         setLoading(true);
-
         setEvents(data);
       } catch (err) {
         setError(error);

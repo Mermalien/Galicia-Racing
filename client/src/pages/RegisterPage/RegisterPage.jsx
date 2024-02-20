@@ -1,6 +1,7 @@
 import "./Register.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import defaultImage from "../../images/default-image.png";
 import { registerUserService } from "../../services/userService";
 
 export const RegisterPage = () => {
@@ -11,7 +12,7 @@ export const RegisterPage = () => {
   const [pass1, setPass1] = useState("");
   const [pass2, setPass2] = useState("");
   const [bio, setBio] = useState("");
-  const [avatar, setAvatar] = useState("");
+  const [avatar, setAvatar] = useState(defaultImage);
   const [errorMsg, setErrorMsg] = useState("");
 
   // Manejador del registro
@@ -35,8 +36,9 @@ export const RegisterPage = () => {
       formData.append("password", pass1);
       formData.append("bio", bio);
 
-      // Si existe avatar lo añadimos.
-      if (avatar) formData.append("avatar", avatar);
+      if (avatar !== defaultImage) {
+        formData.append("avatar", avatar);
+      }
 
       // Registramos el usuario en la base de datos.
       const body = await registerUserService(formData);
@@ -117,6 +119,7 @@ export const RegisterPage = () => {
             <input
               type="file"
               name="avatar"
+              className="input-image"
               id={avatar}
               accept={"image/*"}
               onChange={(e) => setAvatar(e.target.files[0])}

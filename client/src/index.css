@@ -23,6 +23,7 @@ div.app {
   width: 100vw;
   font-family: "Inter", sans-serif;
   letter-spacing: 1px;
+  background: linear-gradient(to top, #4785c4, white);
 }
 
 main {
@@ -30,8 +31,11 @@ main {
 }
 
 h1,
-h2 {
+h2,
+h3 {
   text-align: center;
+  padding: 1rem;
+  margin-top: 1rem;
 }
 
 input {
@@ -39,4 +43,37 @@ input {
 }
 input:focus {
   outline: none;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+form {
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgb(130, 132, 138);
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  padding: 1.5rem;
+  gap: 0.7rem;
+}
+
+fieldset {
+  border: none;
+  height: 4rem;
+}
+
+label {
+  margin: 5%;
+}
+
+input {
+  border: none;
+  border-bottom: solid 1px black;
+  margin-top: 0.5rem;
+}
+.input-image {
+  border-bottom: none;
 }

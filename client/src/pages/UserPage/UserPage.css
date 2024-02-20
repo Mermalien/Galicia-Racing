@@ -1,39 +1,64 @@
-.user-page {
+.user-page-container {
   width: 100vw;
   height: 100vh;
   padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  background: linear-gradient(to top, #4785c4, white);
 }
-
-.user-data-container {
+.user-page {
   display: flex;
   flex-direction: column;
+}
+.user-options {
+  display: flex;
+  justify-content: right;
   gap: 1rem;
-  text-align: center;
+}
+.update,
+.delete-user {
+  display: flex;
 }
 
-h3,
-.myEmail {
-  height: 3rem;
+.link {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  justify-content: center;
 }
+.react-icon {
+  width: 90%;
+  height: 90%;
+  fill: rgb(48, 46, 46);
+}
+.user-data-container {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  text-align: center;
+  gap: 1rem;
+}
+
 .myBio {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-areas: "texto imagen";
-  text-align: justify;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-wrap: wrap;
   font-weight: bold;
+  gap: 1rem;
 }
 .bio {
-  display: grid;
-  grid-area: texto;
   padding: 1rem;
 }
 
 .user-avatar {
-  grid-area: imagen;
-  margin-top: 2rem;
-  height: 9rem;
-  margin-left: 10%;
+  width: 250px;
+  height: 250px;
+  border-radius: 10px;
+  display: flex;
+}
+
+@media (min-width: 768px) {
+  .myBio {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
 }

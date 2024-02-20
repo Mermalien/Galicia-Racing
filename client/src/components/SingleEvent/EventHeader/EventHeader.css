@@ -1,6 +1,10 @@
 .event-header {
   color: red;
-  text-align: center;
-  margin: 0.5rem;
+  display: inline-flex;
+  justify-content: center;
   font-weight: bold;
+  height: fit-content;
+}
+.title-container {
+  margin-top: 12px;
 }

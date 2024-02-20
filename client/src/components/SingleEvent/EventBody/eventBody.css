@@ -1,9 +1,5 @@
 .event-body {
-  height: 450px;
   margin-top: 1rem;
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: auto;
 }
 .event-body .descriptionP {
   padding: 0.5rem;
@@ -13,8 +9,8 @@
   height: auto;
   display: flex;
   flex-direction: column;
+  text-align: left;
   padding: 0.3rem;
-  margin-left: 5rem;
 }
 
 .event-image {

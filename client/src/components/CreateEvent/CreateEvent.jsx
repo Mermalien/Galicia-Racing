@@ -69,6 +69,7 @@ export const CreateEvent = () => {
         <fieldset>
           <label htmlFor="text">Descripción</label>
           <input
+            className="input-description"
             type="desription"
             name="description"
             id={description}
@@ -120,6 +121,7 @@ export const CreateEvent = () => {
         <fieldset>
           <label htmlFor="date">Fecha</label>
           <input
+            className="calendar"
             type="date"
             name="date"
             id={date}

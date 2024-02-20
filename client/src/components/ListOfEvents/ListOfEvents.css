@@ -1,5 +1,11 @@
+.list-container {
+  width: 100vw;
+}
 ul.list-of-events {
   display: flex;
   justify-content: space-evenly;
   flex-wrap: wrap;
+}
+.list-of-events li {
+  border-radius: 12px;
 }

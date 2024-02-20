@@ -23,5 +23,9 @@ export const useUser = (id) => {
     };
     getUser();
   }, [id, token]);
-  return { user, loading, error };
+
+  const removeUser = (id) => {
+    setUser((prevUsers) => prevUsers.filter((user) => user.id !== id));
+  };
+  return { user, removeUser, loading, error };
 };

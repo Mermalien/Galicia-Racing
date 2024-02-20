@@ -4,7 +4,6 @@ const {
   deleteAttendee,
 } = require("../../repositories/attendees");
 const { selectEventById } = require("../../repositories/events");
-
 const { generateError } = require("../../utils");
 
 const attendeeController = async (req, res, next) => {
@@ -22,15 +21,15 @@ const attendeeController = async (req, res, next) => {
       );
     }
 
-    //Traemos el id del usuario que quiere inscribirse y vemos si ya está inscrito en el evento
+    // Traemos el id del usuario que quiere inscribirse y vemos si ya está inscrito en el evento
     const loggedUserId = req.auth.id;
-    const attendee = await selectAttendeeById(loggedUserId, eventId);
+    const attendee = await selectAttendeeById(eventId, loggedUserId);
 
-    //Inscrito/no inscrito
+    // Inscrito/no inscrito
     let inscription;
     let statusCode;
 
-    //Si ya está inscrito y se quiere quitar
+    // Si ya está inscrito y se quiere quitar
     if (attendee) {
       deleteAttendee(loggedUserId, eventId);
       inscription = false;
@@ -42,7 +41,7 @@ const attendeeController = async (req, res, next) => {
     }
 
     res.status(statusCode).send({
-      status: "ok",
+      status: "Me interesa",
       data: { inscription },
     });
   } catch (error) {

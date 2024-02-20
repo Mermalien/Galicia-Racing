@@ -12,6 +12,8 @@ import { AuthContext } from "./context/AuthContext";
 import { useContext } from "react";
 import { SingleEventPage } from "./pages/EventPage/SingleEventPage";
 import { Searcher } from "./components/Searcher/Searcher";
+import { UpdateUser } from "./components/UpdateUser/UpdateUser";
+import { DeleteUser } from "./components/DeleteUser/DeleteUser";
 
 const PrivateRoute = ({ children }) => {
   const { token } = useContext(AuthContext);
@@ -46,6 +48,22 @@ const App = () => {
             element={
               <PrivateRoute>
                 <UserPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/user/update"
+            element={
+              <PrivateRoute>
+                <UpdateUser />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/deleteUser/:id"
+            element={
+              <PrivateRoute>
+                <DeleteUser />
               </PrivateRoute>
             }
           />
